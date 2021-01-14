@@ -7,9 +7,9 @@ namespace
 struct StorageTest : testing::Test
 {
 protected:
-    Storage s1{3, 1024, ST_BLOCK_STORAGE};
-    Storage s2{4, 512, ST_FILE_STORAGE};
-    Storage s3{14, 128, ST_OBJECT_STORAGE};
+    Storage s1{3, 1024, Storage::Type::ST_BLOCK_STORAGE};
+    Storage s2{4, 512,  Storage::Type::ST_FILE_STORAGE};
+    Storage s3{14, 128,  Storage::Type::ST_OBJECT_STORAGE};
 };
 
 TEST_F(StorageTest, total_price_and_levels)

@@ -7,17 +7,24 @@ namespace {
     const int YEAR_MONTHS = 12;
 }
 
-Storage::Storage(int months, int capacity, StorageType type) :months(months), capacity(capacity), type(type)
+
+struct StorageType
+{
+
+};
+
+Storage::Storage(int months, int capacity, Type type) :months(months), capacity(capacity), type(type)
 {
 
 }
+
 
 double Storage::charge() const
 {
     double price = 0;
     switch (type)
     {
-    case ST_BLOCK_STORAGE:
+    case Type::ST_BLOCK_STORAGE:
         price += 40;
         if (capacity > BASIC_BLOCK_SIZE)
         {
@@ -25,7 +32,7 @@ double Storage::charge() const
             price += months * exceed * 3;
         }
         break;
-    case ST_FILE_STORAGE:
+    case Type::ST_FILE_STORAGE:
         price += 20;
         if (months > BASIC_FILE_MONTHS)
         {
@@ -33,7 +40,7 @@ double Storage::charge() const
             price += exceed * 1.5;
         }
         break;
-    case ST_OBJECT_STORAGE:
+    case Type::ST_OBJECT_STORAGE:
         price += 10;
         if (months > BASIC_OBJECT_MONTHS)
         {
@@ -50,7 +57,7 @@ double Storage::charge() const
 
 int Storage::levels() const
 {
-    if (type == ST_OBJECT_STORAGE && months > YEAR_MONTHS)
+    if (type == Type::ST_OBJECT_STORAGE && months > YEAR_MONTHS)
     {
         return 1;
     }

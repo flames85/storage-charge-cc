@@ -5,28 +5,26 @@
 #define MAX_NUM_STORAGE  32   /* 每个租户的最大资源租期数 */
 
 /**
- * 存储资源类型
- * */
-typedef enum
-{
-    ST_BLOCK_STORAGE,  /* 块存储 */
-    ST_FILE_STORAGE,   /* 文件存储 */
-    ST_OBJECT_STORAGE, /* 对象存储 */
-} StorageType;
-
-/**
  * 存储资源
  * */
 struct Storage
 {
-    Storage(int months, int capacity, StorageType type);
+    enum class Type
+    {
+        ST_BLOCK_STORAGE,  /* 块存储 */
+        ST_FILE_STORAGE,   /* 文件存储 */
+        ST_OBJECT_STORAGE, /* 对象存储 */
+    } ;
+
+    Storage(int months, int capacity, Type type);
 
     double charge() const;
     int levels() const;
 
-    int capacity;           /* 存储容量，单位: MB */
-    StorageType type;       /* 存储类型 */
 
+private:
+    int capacity = 0;           /* 存储容量，单位: MB */
+    Type type;       /* 存储类型 */
     int months = 0;         /* 租期时长 */
 };
 
