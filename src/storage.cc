@@ -16,10 +16,6 @@ struct StorageType
 
     virtual int levels(int months) const
     {
-        if (getType() == Storage::Type::ST_OBJECT_STORAGE && months > YEAR_MONTHS)
-        {
-            return 1;
-        }
         return 0;
     }
 };
@@ -84,6 +80,11 @@ struct ObjectStorageType : public StorageType
             price += exceed * capacity * 1.5;
         }
         return price;
+    }
+
+    virtual int levels(int months) const override
+    {
+        return months > YEAR_MONTHS ? 1 : 0;
     }
 
     virtual ~ObjectStorageType() {}
