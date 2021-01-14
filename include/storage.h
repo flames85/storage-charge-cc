@@ -26,24 +26,30 @@ typedef struct StorageTag
 /**
  * 租期
  * */
-typedef struct LeaseTag
+struct Lease
 {
-    int months;       /* 租期时长 */
-    Storage* storage; /* 存储资源 */
-} Lease;
+    Lease(int months, Storage* storage);
+    double charge() const;
+    int levels() const;
+
+private:
+    int months = 0;       /* 租期时长 */
+    Storage* storage = nullptr; /* 存储资源 */
+};
 
 /**
  * 租户
  * */
-typedef struct TenantTag
+struct Tenant
 {
-    int numOfLeases;              /* 租期数目 */
-    Lease* leases[MAX_NUM_LEASE]; /* 租期列表 */
-} Tenant;
+    Tenant();
+    void charge(double* total, int* levels);
+    void add(Lease *lease);
 
-/**
- * 租户计费算法
- * */
-void charge(const Tenant* tenant, double* total, int* levels);
+private:
+
+    int numOfLeases = 0;              /* 租期数目 */
+    Lease* leases[MAX_NUM_LEASE]; /* 租期列表 */
+} ;
 
 #endif

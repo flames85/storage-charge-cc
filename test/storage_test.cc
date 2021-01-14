@@ -20,14 +20,13 @@ TEST_F(StorageTest, total_price_and_levels)
 {
     Tenant tenant;
 
-    tenant.numOfLeases = 0;
-    tenant.leases[tenant.numOfLeases++] = &l1;
-    tenant.leases[tenant.numOfLeases++] = &l2;
-    tenant.leases[tenant.numOfLeases++] = &l3;
+    tenant.add(&l1);
+    tenant.add(&l2);
+    tenant.add(&l3);
 
     double total = 0.0;
     int levels = 0;
-    charge(&tenant, &total, &levels);
+    tenant.charge(&total, &levels);
 
     ASSERT_EQ(2185.0, total);
     ASSERT_EQ(1, levels);
