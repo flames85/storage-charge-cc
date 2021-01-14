@@ -18,18 +18,14 @@ struct Storage
         ST_FILE_STORAGE,   /* 文件存储 */
         ST_OBJECT_STORAGE, /* 对象存储 */
     } ;
-
     Storage(int months, int capacity, Type type);
-
     double charge() const;
     int levels() const;
-private:
-    Type getType() const;
 
 private:
     int months = 0;         /* 租期时长 */
     int capacity = 0;       /* 存储容量，单位: MB */
-    StorageType* type;              /* 存储类型 */
+    StorageType* type;      /* 存储类型 */
 };
 
 /**
@@ -42,7 +38,6 @@ struct Tenant
     void add(Storage* storage);
 
 private:
-
     int numOfStorages = 0;              /* 租期数目 */
     Storage* stroages[MAX_NUM_STORAGE]; /* 租期列表 */
 } ;

@@ -9,7 +9,6 @@ namespace {
 
 struct StorageType
 {
-    virtual Storage::Type getType() const = 0;
     virtual ~StorageType() {}
 
     virtual double charge(int capacity, int months) const = 0;
@@ -22,11 +21,6 @@ struct StorageType
 
 struct BlockStorageType : public StorageType
 {
-    virtual Storage::Type getType() const override
-    {
-        return Storage::Type::ST_BLOCK_STORAGE;
-    }
-
     virtual double charge(int capacity, int months) const override
     {
         double price = 40;
@@ -44,11 +38,6 @@ struct BlockStorageType : public StorageType
 
 struct FileStorageType : public StorageType
 {
-    virtual Storage::Type getType() const override
-    {
-        return Storage::Type::ST_FILE_STORAGE;
-    }
-
     virtual double charge(int capacity, int months) const override
     {
         double price = 20;
@@ -66,11 +55,6 @@ struct FileStorageType : public StorageType
 
 struct ObjectStorageType : public StorageType
 {
-    virtual Storage::Type getType() const override
-    {
-        return Storage::Type::ST_OBJECT_STORAGE;
-    }
-
     virtual double charge(int capacity, int months) const override
     {
         double price = 10;
@@ -115,11 +99,6 @@ StorageType* createStorage(Storage::Type type)
 Storage::Storage(int months, int capacity, Type type) :months(months), capacity(capacity), type(createStorage(type))
 {
 
-}
-
-Storage::Type Storage::getType() const
-{
-    return type->getType();
 }
 
 double Storage::charge() const
