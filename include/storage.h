@@ -4,6 +4,9 @@
 #define BASIC_BLOCK_SIZE 1024 /* 块存储的最大值 */
 #define MAX_NUM_STORAGE  32   /* 每个租户的最大资源租期数 */
 
+
+struct StorageType;
+
 /**
  * 存储资源
  * */
@@ -26,8 +29,7 @@ private:
 private:
     int months = 0;         /* 租期时长 */
     int capacity = 0;       /* 存储容量，单位: MB */
-    Type type;              /* 存储类型 */
-    
+    StorageType* type;              /* 存储类型 */
 };
 
 /**

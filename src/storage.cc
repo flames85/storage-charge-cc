@@ -41,20 +41,41 @@ struct ObjectStorageType : public StorageType
 };
 
 
-Storage::Storage(int months, int capacity, Type type) :months(months), capacity(capacity), type(type)
+StorageType* createStorage(Storage::Type type)
+{
+    StorageType* t = nullptr;
+    switch (type)
+    {
+    case Storage::Type::ST_BLOCK_STORAGE:
+        t = new BlockStorageType;
+        break;
+    case Storage::Type::ST_FILE_STORAGE:
+        t = new FileStorageType;
+        break;
+    case Storage::Type::ST_OBJECT_STORAGE:
+        t = new ObjectStorageType;
+        break;
+    default:
+        t = nullptr;
+        break;
+    }
+    return t;
+}
+
+Storage::Storage(int months, int capacity, Type type) :months(months), capacity(capacity), type(createStorage(type))
 {
 
 }
 
 Storage::Type Storage::getType() const
 {
-    return type;
+    return type->getType();
 }
 
 double Storage::charge() const
 {
     double price = 0;
-    switch (type)
+    switch (type->getType())
     {
     case Type::ST_BLOCK_STORAGE:
         price += 40;
@@ -89,7 +110,7 @@ double Storage::charge() const
 
 int Storage::levels() const
 {
-    if (type == Type::ST_OBJECT_STORAGE && months > YEAR_MONTHS)
+    if (type->getType() == Type::ST_OBJECT_STORAGE && months > YEAR_MONTHS)
     {
         return 1;
     }
