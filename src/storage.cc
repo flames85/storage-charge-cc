@@ -13,6 +13,15 @@ struct StorageType
     virtual ~StorageType() {}
 
     virtual double charge(int capacity, int months) const = 0;
+
+    virtual int levels(int months) const
+    {
+        if (getType() == Storage::Type::ST_OBJECT_STORAGE && months > YEAR_MONTHS)
+        {
+            return 1;
+        }
+        return 0;
+    }
 };
 
 struct BlockStorageType : public StorageType
@@ -119,11 +128,7 @@ double Storage::charge() const
 
 int Storage::levels() const
 {
-    if (type->getType() == Type::ST_OBJECT_STORAGE && months > YEAR_MONTHS)
-    {
-        return 1;
-    }
-    return 0;
+    return type->levels(months);
 }
 
 Tenant::Tenant() {
