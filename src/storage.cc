@@ -7,21 +7,21 @@ namespace {
     const int YEAR_MONTHS = 12;
 }
 
-Lease::Lease(int months, Storage* storage):months(months), storage(storage)
+Storage::Storage(int months, int capacity, StorageType type) :months(months), capacity(capacity), type(type)
 {
 
 }
 
-double Lease::charge() const
+double Storage::charge() const
 {
     double price = 0;
-    switch (storage->type)
+    switch (type)
     {
     case ST_BLOCK_STORAGE:
         price += 40;
-        if (storage->capacity > BASIC_BLOCK_SIZE)
+        if (capacity > BASIC_BLOCK_SIZE)
         {
-            double exceed = (double)(storage->capacity) - BASIC_BLOCK_SIZE;
+            double exceed = (double)(capacity) - BASIC_BLOCK_SIZE;
             price += months * exceed * 3;
         }
         break;
@@ -38,7 +38,7 @@ double Lease::charge() const
         if (months > BASIC_OBJECT_MONTHS)
         {
             double exceed = (double)(months) - BASIC_OBJECT_MONTHS;
-            price += exceed * storage->capacity * 1.5;
+            price += exceed * capacity * 1.5;
         }
         break;
     default:
@@ -48,10 +48,9 @@ double Lease::charge() const
     return price;
 }
 
-int Lease::levels() const
+int Storage::levels() const
 {
-    if ((storage->type == ST_OBJECT_STORAGE)
-        && (months > YEAR_MONTHS))
+    if (type == ST_OBJECT_STORAGE && months > YEAR_MONTHS)
     {
         return 1;
     }
@@ -59,19 +58,19 @@ int Lease::levels() const
 }
 
 Tenant::Tenant() {
-    memset(leases, 0x0, sizeof(leases));
+    memset(stroages, 0x0, sizeof(stroages));
 }
 
-void Tenant::add(Lease* lease)
+void Tenant::add(Storage* storage)
 {
-    leases[numOfLeases++] = lease;
+    stroages[numOfStorages++] = storage;
 }
 void Tenant::charge(double* total, int* levels)
 {
-    for (int index = 0; index < numOfLeases && index < MAX_NUM_LEASE; index++)
+    for (int index = 0; index < numOfStorages && index < MAX_NUM_STORAGE; index++)
     {
-        const Lease* lease = leases[index];
-        *levels += lease->levels();
-        *total += lease->charge();
+        const Storage* storage = stroages[index];
+        *levels += storage->levels();
+        *total += storage->charge();
     }
 }

@@ -2,7 +2,7 @@
 #define HCE627815_E322_4865_8463_CAA81513C14F
 
 #define BASIC_BLOCK_SIZE 1024 /* 块存储的最大值 */
-#define MAX_NUM_LEASE  32   /* 每个租户的最大资源租期数 */
+#define MAX_NUM_STORAGE  32   /* 每个租户的最大资源租期数 */
 
 /**
  * 存储资源类型
@@ -17,24 +17,17 @@ typedef enum
 /**
  * 存储资源
  * */
-typedef struct StorageTag
+struct Storage
 {
-    int capacity;     /* 存储容量，单位: MB */
-    StorageType type; /* 存储类型 */
-} Storage;
+    Storage(int months, int capacity, StorageType type);
 
-/**
- * 租期
- * */
-struct Lease
-{
-    Lease(int months, Storage* storage);
     double charge() const;
     int levels() const;
 
-private:
-    int months = 0;       /* 租期时长 */
-    Storage* storage = nullptr; /* 存储资源 */
+    int capacity;           /* 存储容量，单位: MB */
+    StorageType type;       /* 存储类型 */
+
+    int months = 0;         /* 租期时长 */
 };
 
 /**
@@ -44,12 +37,12 @@ struct Tenant
 {
     Tenant();
     void charge(double* total, int* levels);
-    void add(Lease *lease);
+    void add(Storage* storage);
 
 private:
 
-    int numOfLeases = 0;              /* 租期数目 */
-    Lease* leases[MAX_NUM_LEASE]; /* 租期列表 */
+    int numOfStorages = 0;              /* 租期数目 */
+    Storage* stroages[MAX_NUM_STORAGE]; /* 租期列表 */
 } ;
 
 #endif

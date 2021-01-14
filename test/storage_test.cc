@@ -7,22 +7,18 @@ namespace
 struct StorageTest : testing::Test
 {
 protected:
-    Storage s1{1024, ST_BLOCK_STORAGE};
-    Storage s2{512, ST_FILE_STORAGE};
-    Storage s3{128, ST_OBJECT_STORAGE};
-
-    Lease l1{3,  &s1};
-    Lease l2{4,  &s2};
-    Lease l3{14, &s3};
+    Storage s1{3, 1024, ST_BLOCK_STORAGE};
+    Storage s2{4, 512, ST_FILE_STORAGE};
+    Storage s3{14, 128, ST_OBJECT_STORAGE};
 };
 
 TEST_F(StorageTest, total_price_and_levels)
 {
     Tenant tenant;
 
-    tenant.add(&l1);
-    tenant.add(&l2);
-    tenant.add(&l3);
+    tenant.add(&s1);
+    tenant.add(&s2);
+    tenant.add(&s3);
 
     double total = 0.0;
     int levels = 0;
