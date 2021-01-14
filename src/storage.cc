@@ -7,17 +7,49 @@ namespace {
     const int YEAR_MONTHS = 12;
 }
 
-
 struct StorageType
 {
-
+    virtual Storage::Type getType() const = 0;
+    virtual ~StorageType() {}
 };
+
+struct BlockStorageType : public StorageType
+{
+    virtual Storage::Type getType() const
+    {
+        return Storage::Type::ST_BLOCK_STORAGE;
+    }
+    virtual ~BlockStorageType() {}
+};
+
+
+struct FileStorageType : public StorageType
+{
+    virtual Storage::Type getType() const {
+        return Storage::Type::ST_FILE_STORAGE;
+    }
+    virtual ~FileStorageType() {}
+};
+
+
+struct ObjectStorageType : public StorageType
+{
+    virtual Storage::Type getType() const {
+        return Storage::Type::ST_OBJECT_STORAGE;
+    }
+    virtual ~ObjectStorageType() {}
+};
+
 
 Storage::Storage(int months, int capacity, Type type) :months(months), capacity(capacity), type(type)
 {
 
 }
 
+Storage::Type Storage::getType() const
+{
+    return type;
+}
 
 double Storage::charge() const
 {

@@ -20,12 +20,14 @@ struct Storage
 
     double charge() const;
     int levels() const;
-
+private:
+    Type getType() const;
 
 private:
-    int capacity = 0;           /* 存储容量，单位: MB */
-    Type type;       /* 存储类型 */
     int months = 0;         /* 租期时长 */
+    int capacity = 0;       /* 存储容量，单位: MB */
+    Type type;              /* 存储类型 */
+    
 };
 
 /**
