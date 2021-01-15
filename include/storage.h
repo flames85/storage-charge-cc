@@ -1,11 +1,14 @@
-#ifndef HCE627815_E322_4865_8463_CAA81513C14F
-#define HCE627815_E322_4865_8463_CAA81513C14F
-
+#pragma once
+#include <set>
 struct StorageType;
 
 /**
  * 存储资源
  * */
+
+
+struct Creator;
+
 struct Storage
 {
     enum class Type
@@ -15,7 +18,9 @@ struct Storage
         ST_OBJECT_STORAGE, /* 对象存储 */
     };
 
-    Storage(int months, int capacity, Type type);
+    
+
+    Storage(int months, int capacity, Type type, const Creator& creator);
     double charge() const;
     int levels() const;
 
@@ -23,21 +28,13 @@ private:
     int months = 0;         /* 租期时长 */
     int capacity = 0;       /* 存储容量，单位: MB */
     StorageType* type;      /* 存储类型 */
+
 };
 
-/**
- * 租户
- * */
-struct Tenant
+struct Creator
 {
-    Tenant();
-    void charge(double* total, int* levels);
-    void add(Storage* storage);
+    void regist(Storage::Type);
+    StorageType* createStorage(Storage::Type type) const;
 
-private:
-    enum { MAX_NUM_STORAGE = 32 };
-    int numOfStorages = 0;              /* 租期数目 */
-    Storage* stroages[MAX_NUM_STORAGE]; /* 租期列表 */
-} ;
-
-#endif
+    std::set<Storage::Type> m_regs;
+};

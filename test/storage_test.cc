@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "storage.h"
+#include "tenant.h"
 
 namespace
 {
@@ -7,13 +8,23 @@ namespace
 struct StorageTest : testing::Test
 {
 protected:
-    Storage s1{3, 1024, Storage::Type::ST_BLOCK_STORAGE};
-    Storage s2{4, 512,  Storage::Type::ST_FILE_STORAGE};
-    Storage s3{14, 128,  Storage::Type::ST_OBJECT_STORAGE};
+
 };
 
 TEST_F(StorageTest, total_price_and_levels)
 {
+    Creator creator;
+    creator.regist(Storage::Type::ST_BLOCK_STORAGE);
+    creator.regist(Storage::Type::ST_FILE_STORAGE);
+    creator.regist(Storage::Type::ST_OBJECT_STORAGE);
+
+
+    Storage s1{ 3, 1024, Storage::Type::ST_BLOCK_STORAGE, creator };
+    Storage s2{ 4, 512,  Storage::Type::ST_FILE_STORAGE, creator };
+    Storage s3{ 14, 128,  Storage::Type::ST_OBJECT_STORAGE, creator };
+
+
+
     Tenant tenant;
 
     tenant.add(&s1);
